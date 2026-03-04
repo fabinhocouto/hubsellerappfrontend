@@ -1,0 +1,81 @@
+.management-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+  
+  button {
+    margin-top: 10px;
+  }
+  
+  table {
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  mat-header-row, mat-row {
+    text-align: center;
+  }
+
+  .pagination-container {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    margin-top: 16px; /* Espaço entre a tabela e a paginação */
+  }
+  
+  .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.card-header h2 {
+  margin: 0;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.status-aprovado {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-reprovado {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.status-analise {
+  background: #fff8e1;
+  color: #f9a825;
+}
+
+.foto-grid {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.foto-grid {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 4px;
+}

@@ -1,0 +1,90 @@
+<h2 mat-dialog-title>Adicionar link anúncio</h2>
+
+<mat-dialog-content>
+
+  <!-- Campo para adicionar novo link -->
+  <mat-form-field appearance="outline" style="width: 100%;">
+    <mat-label>Link da referência</mat-label>
+    <input matInput [(ngModel)]="novoLink" />
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="adicionarLink()">
+    Adicionar
+  </button>
+
+  <mat-divider style="margin: 16px 0;"></mat-divider>
+
+  <!-- Descrição extraída -->
+  <div *ngIf="descricao">
+    <p><strong>{{ descricao }}</strong></p>
+  </div>
+
+  <!-- Mensagem quando vazio -->
+  <div *ngIf="referencias.length === 0">
+    Nenhuma referência adicionada
+  </div>
+
+  <!-- Lista de referências -->
+  <mat-list *ngIf="referencias.length > 0">
+
+    <mat-list>
+  <mat-card class="referencia-card"
+          *ngFor="let ref of referencias.slice().reverse(); let i = index">
+
+  <div class="referencia-header">
+
+    <!-- Esquerda -->
+    <div class="referencia-info">
+
+      <div class="titulo">
+        <strong>Link {{ i + 1 }}</strong>
+        <span>
+          {{ ref.linkProduto.length > 70 
+              ? (ref.linkProduto | slice:0:70) + '...' 
+              : ref.linkProduto }}
+        </span>
+      </div>
+
+      <div class="metricas">
+
+        <mat-chip>
+          Total {{ ref.visitas?.[ref.visitas.length - 1]?.numeroVisitas ?? 0 }}
+          visitas
+        </mat-chip>
+
+        <mat-chip color="primary" selected>
+          {{ ref.visitasUltimosQuinzeDias }} visitas nos últimos 15 dias
+          (Média {{ (ref.visitasUltimosQuinzeDias / 15) | number:'1.0-1' }} por dia)
+        </mat-chip>
+
+        <mat-chip
+          [ngClass]="getClasseCriacao(ref.quantidadeDiasCriado)">
+          Criado a {{ ref.quantidadeDiasCriado }} dia(s)
+        </mat-chip>
+
+      </div>
+
+    </div>
+
+    <!-- Botão excluir -->
+    <button mat-icon-button
+            color="warn"
+            (click)="removerLink(i)">
+      <mat-icon>delete</mat-icon>
+    </button>
+
+  </div>
+
+</mat-card>
+</mat-list>
+
+  </mat-list>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="fechar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="salvar()">
+    Incluir
+  </button>
+</mat-dialog-actions>

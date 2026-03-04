@@ -1,0 +1,83 @@
+<div class="management-container">
+    <h2>Gerenciamento de Usuários</h2>
+
+    <!-- Formulário para adicionar/editar usuário -->
+    <form [formGroup]="userForm">
+      <mat-form-field appearance="outline">
+        <mat-label>Nome Completo</mat-label>
+        <input matInput formControlName="nomeCompleto">
+        <mat-error *ngIf="userForm.get('nomeCompleto')?.hasError('required')&&
+        (userForm.get('nomeCompleto')?.dirty || userForm.get('nomeCompleto')?.touched)">
+          Nome Completo é obrigatório.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Usuário</mat-label>
+        <input matInput formControlName="login">
+        <mat-error *ngIf="userForm.get('login')?.hasError('login') &&
+        (userForm.get('login')?.dirty || userForm.get('login')?.touched)">
+          Usuário é obrigatório.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Senha</mat-label>
+        <input matInput type="password" formControlName="senha">
+        <mat-error *ngIf="userForm.get('senha')?.hasError('required')&&
+        (userForm.get('senha')?.dirty || userForm.get('senha')?.touched)">
+          Senha é obrigatória.
+        </mat-error>
+        <mat-error *ngIf="userForm.get('senha')?.hasError('minlength')&&
+        (userForm.get('senha')?.dirty || userForm.get('senha')?.touched)">
+          Senha deve ter no mínimo 6 caracteres.
+        </mat-error>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="button" (click)="save()">
+        {{ isEditing ? 'Salvar Alterações' : 'Adicionar Usuário' }}
+      </button>
+      <button mat-raised-button color="warn" type="button" (click)="onCancel()" *ngIf="isEditing">
+        Cancelar
+      </button>
+    </form>
+
+    <!-- Tabela de usuários -->
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+      <!-- Coluna Nome Completo -->
+      <ng-container matColumnDef="fullName">
+        <th mat-header-cell *matHeaderCellDef>Nome Completo</th>
+        <td mat-cell *matCellDef="let user">{{ user.nomeCompleto }}</td>
+      </ng-container>
+
+      <!-- Coluna Usuário -->
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef>Usuário</th>
+        <td mat-cell *matCellDef="let user">{{ user.login }}</td>
+      </ng-container>
+
+      <!-- Coluna Ações -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Ações</th>
+        <td mat-cell *matCellDef="let user; let i = index">
+          <button mat-icon-button color="primary" (click)="onEdit(user, i)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="onDelete(i)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+   <!-- PAGINAÇÃO CENTRALIZADA -->
+    <div class="pagination-container">
+        <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </div>
+  
+
+</div>

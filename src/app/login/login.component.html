@@ -1,0 +1,48 @@
+<div class="login-container">
+  <mat-card>
+
+    <mat-card-header class="login-header">
+      <img 
+        src="assets/images/logo-hubseller.png" 
+        alt="HubSeller Logo" 
+        class="login-logo">
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Usuário</mat-label>
+          <input matInput formControlName="username" placeholder="Digite seu usuário">
+          <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
+            Usuário é obrigatório.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="full-width">
+          <mat-label>Senha</mat-label>
+          <input matInput formControlName="password" type="password" placeholder="Digite sua senha">
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+            Senha é obrigatória.
+          </mat-error>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
+            Senha deve ter no mínimo 6 caracteres.
+          </mat-error>
+        </mat-form-field>
+
+        <mat-error *ngIf="invalidCredentials" class="error-message">
+          Usuário ou senha inválidos.
+        </mat-error>
+
+        <mat-error *ngIf="serverOut" class="error-message">
+          Servidor offline.
+        </mat-error>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="loginForm.invalid">
+          Entrar
+        </button>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

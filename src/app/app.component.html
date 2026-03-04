@@ -1,0 +1,35 @@
+<mat-toolbar color="primary" *ngIf="showMenu">
+    <button mat-icon-button (click)="toggleMenu()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Hub Seller</span>
+    <span class="spacer"></span>
+    <button mat-button (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Sair</span>
+    </button>
+  </mat-toolbar>
+  
+  <mat-sidenav-container *ngIf="showMenu">
+    <mat-sidenav #sidenav mode="side" opened >
+      <mat-nav-list>
+        <a mat-list-item routerLink="/">
+          <mat-icon>home</mat-icon>
+          <span>Início</span>
+        </a>
+        <a mat-list-item routerLink="/usuario">
+          <mat-icon>person</mat-icon>
+          <span>Usuario</span>
+        </a>
+        <a mat-list-item routerLink="/analiseproduto">
+          <mat-icon>category</mat-icon>
+          <span>Análise produto</span>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+  
+    <mat-sidenav-content *ngIf="showMenu">
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  <router-outlet *ngIf="!showMenu"></router-outlet>
