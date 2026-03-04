@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "modelo-app-frontend": {
+    "hubseller-app-frontend": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/modelo-app-frontend",
+            "outputPath": "dist/hubseller-app-frontend",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -61,10 +61,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "modelo-app-frontend:build:production"
+              "browserTarget": "hubseller-app-frontend:build:production"
             },
             "development": {
-              "browserTarget": "modelo-app-frontend:build:development"
+              "browserTarget": "hubseller-app-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -72,7 +72,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "modelo-app-frontend:build"
+            "browserTarget": "hubseller-app-frontend:build"
           }
         },
         "test": {
