@@ -1,5 +1,5 @@
 export const environment = {
-    production: true,
-    apiUrl: 'https://hubsellerappbackend.onrender.com',
+    production: false,
+    apiUrl: 'http://localhost:8080',
     enableDebug: true
   };

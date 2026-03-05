@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
 
 
 interface AuthResponse {
@@ -15,7 +16,7 @@ interface AuthResponse {
 })
 export class AuthService {
   private tokenKey = 'authToken';
-  private apiUrlLogin = 'http://localhost:8080/hubsellerapp-backend/autenticacao/login';
+  private apiUrlLogin = environment.apiUrl+'/hubsellerapp-backend/autenticacao/login';
 
   constructor(private http: HttpClient, private router: Router) {}
 
