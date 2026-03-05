@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ProdutoAnaliseResumoDTO } from '../models/produtoanaliseresumoDTO.model';
 import { ProdutoAnaliseDTO } from '../models/produtoanaliseDTO.model';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -10,7 +11,7 @@ import { ProdutoAnaliseDTO } from '../models/produtoanaliseDTO.model';
 })
 export class ProdutoAnaliseService {
 
-  private readonly API = 'http://localhost:8080/hubsellerapp-backend/produtos';
+  private readonly API = environment.apiUrl+'/hubsellerapp-backend/produtos';
 
   constructor(private http: HttpClient) { }
 

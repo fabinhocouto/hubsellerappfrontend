@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { ProdutoAnaliseResumoDTO } from '../models/produtoanaliseresumoDTO.model';
 import { ProdutoAnaliseDTO } from '../models/produtoanaliseDTO.model';
 import { DadosBasicoAnuncioDTO } from '../models/dadosbasicoanuncioDTO.model';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
@@ -11,7 +12,7 @@ import { DadosBasicoAnuncioDTO } from '../models/dadosbasicoanuncioDTO.model';
 })
 export class MercadoLivreService {
 
-  private readonly API = 'http://localhost:8080/hubsellerapp-backend/mercadolivre';
+  private readonly API = environment.apiUrl+'/hubsellerapp-backend/mercadolivre';
 
   constructor(private http: HttpClient) { }
 

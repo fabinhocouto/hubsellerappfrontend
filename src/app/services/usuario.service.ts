@@ -3,16 +3,17 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Usuario } from '../models/usuario.model';
 import { UsuarioResumidoDTO } from '../models/usuarioresumidoDTO.model';
+import { environment } from 'src/environments/environment';
 
 
 @Injectable({
   providedIn: 'root' // O serviço é fornecido no nível raiz
 })
 export class UsuarioService {
-  private apiUrlCriarLogin = 'http://localhost:8080/hubsellerapp-backend/autenticacao/criar';
-  private apiUrlAtualizarUsuario = 'http://localhost:8080/hubsellerapp-backend/usuarios/salvar';
-  private apiUrlLoadUsuario = 'http://localhost:8080/hubsellerapp-backend/usuarios/find-all';
-  private apiUrlLoadUsuarioResumido = 'http://localhost:8080/hubsellerapp-backend/usuarios/find-all-resumido';
+  private apiUrlCriarLogin = environment.apiUrl+'/hubsellerapp-backend/autenticacao/criar';
+  private apiUrlAtualizarUsuario = environment.apiUrl+'/hubsellerapp-backend/usuarios/salvar';
+  private apiUrlLoadUsuario = environment.apiUrl+'/hubsellerapp-backend/usuarios/find-all';
+  private apiUrlLoadUsuarioResumido = environment.apiUrl+'/hubsellerapp-backend/usuarios/find-all-resumido';
 
   constructor(private http: HttpClient) {}
 
