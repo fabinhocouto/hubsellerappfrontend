@@ -52,9 +52,13 @@
           visitas
         </mat-chip>
 
-        <mat-chip color="primary" selected>
+        <mat-chip
+          selected
+          [ngClass]="getClassePerformance(ref.visitasUltimosQuinzeDias)">
+
           {{ ref.visitasUltimosQuinzeDias }} visitas nos últimos 15 dias
           (Média {{ (ref.visitasUltimosQuinzeDias / 15) | number:'1.0-1' }} por dia)
+
         </mat-chip>
 
         <mat-chip

@@ -56,3 +56,21 @@
   background-color: #f44336 !important;
   color: white !important;
 }
+
+.performance-alta {
+  background-color: #e8f5e9 !important;
+  color: #2e7d32 !important;
+  border: 1px solid #81c784;
+}
+
+.performance-media {
+  background-color: #fffde7 !important;
+  color: #f9a825 !important;
+  border: 1px solid #ffd54f;
+}
+
+.performance-baixa {
+  background-color: #ffebee !important;
+  color: #c62828 !important;
+  border: 1px solid #ef9a9a;
+}

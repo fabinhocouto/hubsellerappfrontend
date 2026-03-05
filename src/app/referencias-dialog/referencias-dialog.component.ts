@@ -147,4 +147,11 @@ getClasseCriacao(dias: number): string {
   if (dias <= 380) return 'chip-amarelo';
   return 'chip-vermelho';
 }
+getClassePerformance(visitas: number): string {
+  const media = visitas / 15;
+
+  if (media > 60) return 'performance-alta';
+  if (media > 30) return 'performance-media';
+  return 'performance-baixa';
+}
 }
