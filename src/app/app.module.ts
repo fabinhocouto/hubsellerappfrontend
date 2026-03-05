@@ -37,6 +37,8 @@ import { MercadoLivreService } from './services/mercadolivre.service';
 import { MatChipsModule } from '@angular/material/chips';
 import { ImgBBService } from './services/imgbb.service';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { LoadingInterceptor } from './interceptors/loading.interceptor';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 @NgModule({
@@ -84,10 +86,12 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
     MatInputModule,
     MatButtonModule,
     MatChipsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LoadingInterceptor, multi: true },
     AuthGuard,
     AuthService,
     UsuarioService,

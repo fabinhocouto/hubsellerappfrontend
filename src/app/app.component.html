@@ -33,3 +33,11 @@
     </mat-sidenav-content>
   </mat-sidenav-container>
   <router-outlet *ngIf="!showMenu"></router-outlet>
+  <router-outlet></router-outlet>
+
+<div class="global-loading" *ngIf="loading$ | async">
+  <mat-progress-spinner
+    mode="indeterminate"
+    diameter="70">
+  </mat-progress-spinner>
+</div>

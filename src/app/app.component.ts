@@ -3,6 +3,9 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { MatSidenav } from '@angular/material/sidenav';
 import { AuthService } from './auth.service';
+import { Observable } from 'rxjs';
+import { LoadingService } from './services/loading.service';
+
 
 @Component({
   selector: 'app-root',
@@ -14,7 +17,11 @@ export class AppComponent implements AfterViewInit {
 
   @ViewChild('sidenav') sidenav!: MatSidenav; // Corrige erro de inicialização
 
-  constructor(private router: Router,private authService: AuthService) {}
+  loading$: Observable<boolean>;
+
+  constructor(private router: Router,private authService: AuthService, private loadingService: LoadingService) {
+    this.loading$ = this.loadingService.loading$;
+  }
 
   ngAfterViewInit() {
     // Observa as mudanças de rota
