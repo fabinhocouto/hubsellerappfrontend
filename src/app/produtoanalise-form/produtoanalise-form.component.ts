@@ -43,7 +43,7 @@ export class ProdutoAnaliseFormComponent implements OnInit {
             fotoBase64: [''],
             fotoUrlImgBB: [''],
             observacao: [''], 
-            usuario: [''],
+            usuario: [null],
             referencias: this.fb.array([])
           });
 
