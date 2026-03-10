@@ -6,6 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ReferenciasDialogComponent } from '../referencias-dialog/referencias-dialog.component';
 import { ImgBBService } from '../services/imgbb.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-produtoanalise-form',
@@ -20,6 +21,7 @@ export class ProdutoAnaliseFormComponent implements OnInit {
   modoEdicao = false;
   produtoId!: number;
   salvando = false;
+  dragging = false;
   
   constructor(
     private fb: FormBuilder,
@@ -197,6 +199,10 @@ onFileSelected(event: any) {
   const file = event.target.files[0];
   if (!file) return;
 
+  if (file) {
+    this.processarArquivo(file);
+  }
+
   const reader = new FileReader();
 
   reader.onload = () => {
@@ -218,5 +224,72 @@ onFileSelected(event: any) {
   };
 
   reader.readAsDataURL(file);
+}
+
+processarArquivo(file: File) {
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    this.form.patchValue({
+      fotoUrlImgBB: reader.result
+    });
+  };
+
+  reader.readAsDataURL(file);
+}
+onDragOver(event: DragEvent) {
+  event.preventDefault();
+  this.dragging = true;
+}
+
+onDragLeave(event: DragEvent) {
+  event.preventDefault();
+  this.dragging = false;
+}
+
+onDrop(event: DragEvent) {
+  event.preventDefault();
+  this.dragging = false;
+
+  if (!event.dataTransfer?.files.length) return;
+
+  const file = event.dataTransfer.files[0];
+
+  if (file.type.startsWith('image/')) {
+    this.processarArquivo(file);
+  }
+}
+
+@HostListener('document:paste', ['$event'])
+onPaste(event: ClipboardEvent) {
+
+  const items = event.clipboardData?.items;
+  if (!items) return;
+
+  let encontrouImagem = false;
+
+  for (let i = 0; i < items.length; i++) {
+
+    if (items[i].type.startsWith('image')) {
+
+      encontrouImagem = true;
+
+      const blob = items[i].getAsFile();
+
+      if (blob) {
+        const file = new File([blob], 'print.png', { type: blob.type });
+        this.processarArquivo(file);
+      }
+
+    }
+
+  }
+
+  // Só bloqueia o paste normal se for imagem
+  if (encontrouImagem) {
+    event.preventDefault();
+  }
+
 }
 }

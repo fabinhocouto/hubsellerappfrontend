@@ -14,19 +14,26 @@
 
   <div class="foto-upload">
 
-  <div class="foto-box" (click)="selecionarArquivo()">
+  <div class="foto-box"
+     (click)="selecionarArquivo()"
+     (paste)="onPaste($event)"
+     (dragover)="onDragOver($event)"
+     (dragleave)="onDragLeave($event)"
+     (drop)="onDrop($event)"
+     [class.dragging]="dragging"
+     tabindex="0">
 
-  <img *ngIf="form.get('fotoUrlImgBB')?.value"
-       [src]="form.get('fotoUrlImgBB')?.value"
-       class="foto-preview" />
+    <img *ngIf="form.get('fotoUrlImgBB')?.value"
+        [src]="form.get('fotoUrlImgBB')?.value"
+        class="foto-preview" />
 
-  <div *ngIf="!form.get('fotoUrlImgBB')?.value"
-       class="foto-placeholder">
-    <mat-icon>photo_camera</mat-icon>
-    <span>Clique para enviar foto</span>
+    <div *ngIf="!form.get('fotoUrlImgBB')?.value"
+        class="foto-placeholder">
+      <mat-icon>photo_camera</mat-icon>
+      <span>Clique, arraste ou Ctrl+V para enviar foto</span>
+    </div>
+
   </div>
-
-</div>
 
   <input type="file"
          #fileInput
