@@ -5,188 +5,216 @@
   </div>
 
   <mat-card-content>
-
     <form [formGroup]="form">
-      
 
-      <!-- Área de Upload + Campos lado a lado -->
-<div class="top-section">
+      <!-- Área de Upload + Campos principais -->
+      <div class="top-section">
 
-  <div class="foto-upload">
+        <!-- Upload de foto -->
+        <div class="foto-upload">
+          <div class="foto-box"
+               (click)="selecionarArquivo()"
+               (paste)="onPaste($event)"
+               (dragover)="onDragOver($event)"
+               (dragleave)="onDragLeave($event)"
+               (drop)="onDrop($event)"
+               [class.dragging]="dragging"
+               tabindex="0">
 
-  <div class="foto-box"
-     (click)="selecionarArquivo()"
-     (paste)="onPaste($event)"
-     (dragover)="onDragOver($event)"
-     (dragleave)="onDragLeave($event)"
-     (drop)="onDrop($event)"
-     [class.dragging]="dragging"
-     tabindex="0">
+            <img *ngIf="form.get('fotoUrlImgBB')?.value"
+                 [src]="form.get('fotoUrlImgBB')?.value"
+                 class="foto-preview" />
 
-    <img *ngIf="form.get('fotoUrlImgBB')?.value"
-        [src]="form.get('fotoUrlImgBB')?.value"
-        class="foto-preview" />
+            <div *ngIf="!form.get('fotoUrlImgBB')?.value" class="foto-placeholder">
+              <mat-icon>photo_camera</mat-icon>
+              <span>Clique, arraste ou Ctrl+V para enviar foto</span>
+            </div>
 
-    <div *ngIf="!form.get('fotoUrlImgBB')?.value"
-        class="foto-placeholder">
-      <mat-icon>photo_camera</mat-icon>
-      <span>Clique, arraste ou Ctrl+V para enviar foto</span>
-    </div>
-
-  </div>
-
-  <input type="file"
-         #fileInput
-         accept="image/*"
-         (change)="onFileSelected($event)"
-         hidden />
-
-</div>
-
-  <!-- Campos ao lado -->
-  <div class="top-fields form-grid">
-
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Descrição</mat-label>
-      <input matInput formControlName="descricao">
-      <mat-icon matPrefix>inventory_2</mat-icon>
-      <mat-error *ngIf="form.get('descricao')?.hasError('required')">
-        Campo obrigatório
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Menor preço</mat-label>
-      <span matPrefix>R$&nbsp;</span>
-      <input matInput
-       formControlName="menorPreco"
-       mask="separator.2"
-       thousandSeparator="."
-       decimalMarker=","
-       prefix="R$ ">
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Possui perguntas?</mat-label>
-      <mat-select formControlName="possuiPerguntas">
-        <mat-option [value]="true">Sim</mat-option>
-        <mat-option [value]="false">Não</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Possui anúncios novos?</mat-label>
-      <mat-select formControlName="possuiAnunciosRecentes">
-        <mat-option [value]="true">Sim</mat-option>
-        <mat-option [value]="false">Não</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>Link AliExpress</mat-label>
-      <input matInput formControlName="linkAliExpress">
-      <mat-icon matSuffix>link</mat-icon>
-      <mat-error *ngIf="form.get('linkAliExpress')?.hasError('required')">
-        Campo obrigatório
-      </mat-error>
-    </mat-form-field>
-
-  </div>
-
-</div>
-<div class="referencias-header">
-
-  <div class="titulo-bloco">
-    <div>
-      <h3>Anúncios analisados</h3>
-      
-    </div>
-  </div>
-
-  <button mat-raised-button
-          color="primary"
-          (click)="abrirDialogLink()">
-    <mat-icon>add</mat-icon>
-    Adicionar link
-  </button>
-
-</div>
-
-
-<div class="referencias-grid">
-
-  <mat-card class="referencia-card"
-            *ngFor="let ref of referencias.controls"
-            [ngClass]="getClassePerformance(ref.value.visitasUltimosQuinzeDias)">
-
-    <!-- Header -->
-    <div class="ref-header">
-      <button mat-stroked-button
-              color="primary"
-              (click)="abrirAnuncio(ref.value.linkProduto)">
-        <mat-icon>open_in_new</mat-icon>
-        Ver anúncio
-      </button>
-    </div>
-
-    <!-- Corpo principal -->
-    <div class="ref-body">
-
-      <div class="metric-box">
-        <mat-icon>visibility</mat-icon>
-
-        <div>
-          <div class="label">Últimos 15 dias</div>
-          <div class="valor">
-            {{ ref.value.visitasUltimosQuinzeDias }}
           </div>
-          <div class="media">
-            {{ (ref.value.visitasUltimosQuinzeDias / 15) | number:'1.0-1' }} / dia
+
+          <input type="file"
+                 #fileInput
+                 accept="image/*"
+                 (change)="onFileSelected($event)"
+                 hidden />
+        </div>
+
+        <!-- Campos ao lado da foto -->
+        <div class="top-fields form-grid">
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Descrição</mat-label>
+            <input matInput formControlName="descricao">
+            <mat-icon matPrefix>inventory_2</mat-icon>
+            <mat-error *ngIf="form.get('descricao')?.hasError('required')">
+              Campo obrigatório
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" >
+            <mat-label>Menor preço</mat-label>
+            <input matInput
+                  formControlName="menorPreco"
+                  currencyMask
+                  [options]="currencyOptions"
+                  placeholder="R$ 0,00">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Possui perguntas?</mat-label>
+            <mat-select formControlName="possuiPerguntas">
+              <mat-option [value]="true">Sim</mat-option>
+              <mat-option [value]="false">Não</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Possui anúncios novos?</mat-label>
+            <mat-select formControlName="possuiAnunciosRecentes">
+              <mat-option [value]="true">Sim</mat-option>
+              <mat-option [value]="false">Não</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Link AliExpress</mat-label>
+            <input matInput formControlName="linkAliExpress">
+            <mat-icon matSuffix>link</mat-icon>
+            <mat-error *ngIf="form.get('linkAliExpress')?.hasError('required')">
+              Campo obrigatório
+            </mat-error>
+          </mat-form-field>
+
+        </div>
+      </div>
+
+      <!-- Accordion para seções expansíveis -->
+      <mat-accordion multi>
+
+        <!-- Anúncios analisados -->
+        <mat-expansion-panel [expanded]="expandidoReferenia">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Anúncios analisados ({{ referencias.length }})
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <!-- Botão dentro do painel, alinhado à direita -->
+  <div class="acoes-header" style="display:flex; justify-content:flex-end; margin-bottom:16px;">
+    <button mat-raised-button
+            color="primary"
+            (click)="abrirDialogLink()">
+      <mat-icon>add</mat-icon>
+      Adicionar link
+    </button>
+  </div>
+
+  <div class="referencias-grid">
+
+    <mat-card class="referencia-card"
+              *ngFor="let ref of referencias.controls"
+              [ngClass]="getClassePerformance(ref.value.visitasUltimosQuinzeDias)">
+      
+      <div class="ref-header">
+        <button mat-stroked-button
+                color="primary"
+                (click)="abrirAnuncio(ref.value.linkProduto)">
+          <mat-icon>open_in_new</mat-icon>
+          Ver anúncio
+        </button>
+      </div>
+
+      <div class="ref-body">
+        <div class="metric-box">
+          <mat-icon>visibility</mat-icon>
+          <div>
+            <div class="label">Últimos 15 dias</div>
+            <div class="valor">{{ ref.value.visitasUltimosQuinzeDias }}</div>
+            <div class="media">{{ (ref.value.visitasUltimosQuinzeDias / 15) | number:'1.0-1' }} / dia</div>
           </div>
         </div>
       </div>
 
-    </div>
-
-    <!-- Histórico mini -->
-    <div class="visitas-mini">
-      <div *ngFor="let v of ref.value.visitas" class="mini-item">
-        {{ v.dataVerificacao | date:'dd/MM' }}
-        <strong>{{ v.numeroVisitas }} visitas</strong>
+      <div class="visitas-mini">
+        <div *ngFor="let v of ref.value.visitas" class="mini-item">
+          {{ v.dataVerificacao | date:'dd/MM' }}
+          <strong>{{ v.numeroVisitas }} visitas</strong>
+        </div>
       </div>
-    </div>
 
-  </mat-card>
+    </mat-card>
 
-</div>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Observações</mat-label>
+      <textarea matInput
+                rows="4"
+                formControlName="observacao">
+      </textarea>
+      <mat-hint align="end">
+        {{ form.get('observacao')?.value?.length || 0 }} caracteres
+      </mat-hint>
+    </mat-form-field>
 
-<h3></h3>
+  </div>
+</mat-expansion-panel>
 
-<mat-form-field appearance="outline" class="full-width">
-  <mat-label>Observações</mat-label>
-  <textarea matInput
-            rows="4"
-            formControlName="observacao">
-  </textarea>
-  <mat-hint align="end">
-    {{ form.get('observacao')?.value?.length || 0 }} caracteres
-  </mat-hint>
-</mat-form-field>
+        <!-- Avaliação da análise -->
+        <mat-expansion-panel [expanded]="expandidoAvaliacao">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              Avaliação análise produto
+            </mat-panel-title>
+          </mat-expansion-panel-header>
 
+          <div class="avaliacao-container">
+
+            <!-- STATUS -->
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Status da análise</mat-label>
+
+              <mat-icon matPrefix [ngClass]="getClasseStatus()">
+                {{ getIconeStatus() }}
+              </mat-icon>
+
+              <mat-select formControlName="status">
+                <mat-option value="MONITORANDO">Monitorando</mat-option>
+                <mat-option value="COTANDO">Cotando</mat-option>
+                <mat-option value="REPROVADO">Reprovado</mat-option>
+                <mat-option value="APROVADO">Aprovado</mat-option>
+              </mat-select>
+            </mat-form-field>
+
+            <!-- OBSERVAÇÃO -->
+            <div formGroupName="produtoAvaliacao">
+              <mat-form-field appearance="outline" class="full-width">
+                <mat-label>Observações da avaliação</mat-label>
+                <textarea matInput
+                          rows="5"
+                          formControlName="observacao"
+                          placeholder="Descreva aqui o motivo da aprovação ou reprovação do produto">
+                </textarea>
+                <mat-hint align="end">
+                  {{ form.get('produtoAvaliacao.observacao')?.value?.length || 0 }} caracteres
+                </mat-hint>
+              </mat-form-field>
+            </div>
+
+          </div>
+        </mat-expansion-panel>
+
+      </mat-accordion>
+
+      <!-- Botões de ação -->
       <div class="acoes">
         <button mat-stroked-button color="warn" (click)="cancelar()">
           Cancelar
         </button>
-
-        <button mat-raised-button
-                color="primary"
-                [disabled]="salvando"
-                (click)="salvar()">
+        <button mat-raised-button color="primary" [disabled]="salvando" (click)="salvar()">
           {{ salvando ? 'Salvando...' : 'Salvar' }}
         </button>
       </div>
 
     </form>
-
   </mat-card-content>
+
 </mat-card>

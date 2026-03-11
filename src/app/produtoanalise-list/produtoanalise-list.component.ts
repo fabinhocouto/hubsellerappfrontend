@@ -60,23 +60,40 @@ filtrarPorUsuario() {
     this.dataSource.filter = filtro.trim().toLowerCase();
   }
 
-  getStatusLabel(status: boolean | null): string {
-  if (status === true) return 'Aprovado';
-  if (status === false) return 'Reprovado';
-  return 'Em análise';
+  getStatusLabel(status: string): string {
+
+  switch (status) {
+    case 'MONITORANDO': return 'Monitorando';
+    case 'COTANDO': return 'Cotando';
+    case 'REPROVADO': return 'Reprovado';
+    case 'APROVADO': return 'Aprovado';
+    default: return 'Desconhecido';
+  }
+
 }
 
-getStatusIcon(status: boolean | null): string {
-  console.log('status'+status)
-  if (status === true) return 'check_circle';
-  if (status === false) return 'cancel';
-  return 'hourglass_top';
+getStatusIcon(status: string): string {
+
+  switch (status) {
+    case 'MONITORANDO': return 'analytics';
+    case 'COTANDO': return 'search';
+    case 'REPROVADO': return 'cancel';
+    case 'APROVADO': return 'check_circle';
+    default: return 'help';
+  }
+
 }
 
-getStatusClass(status: boolean | null): string {
-  if (status === true) return 'status-aprovado';
-  if (status === false) return 'status-reprovado';
-  return 'status-analise';
+getStatusClass(status: string): string {
+
+  switch (status) {
+    case 'MONITORANDO': return 'status-monitorando';
+    case 'COTANDO': return 'status-cotando';
+    case 'REPROVADO': return 'status-reprovado';
+    case 'APROVADO': return 'status-aprovado';
+    default: return '';
+  }
+
 }
 
 }

@@ -27,6 +27,7 @@ export class LoginComponent {
       this.authService.login(username, password).subscribe({
         next: (response) => {
           this.authService.setToken(response.token);
+          this.authService.setUsuario(response.usuario);
           this.invalidCredentials = false;
           this.serverOut = false;
           this.router.navigate(['/home']);

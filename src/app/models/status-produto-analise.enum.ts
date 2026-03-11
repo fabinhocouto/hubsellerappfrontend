@@ -1,0 +1,6 @@
+export enum StatusProdutoAnalise {
+  MONITORANDO = 'MONITORANDO',
+  COTANDO = 'EM CONTANDO',
+  REPROVADO = 'REPROVADO',
+  APROVADO = 'APROVADO'
+}

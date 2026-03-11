@@ -67,16 +67,17 @@
 
         <ng-container matColumnDef="resultado">
           <th mat-header-cell *matHeaderCellDef> Status </th>
+
           <td mat-cell *matCellDef="let element">
 
             <div class="status-badge"
-                [ngClass]="getStatusClass(element.resultadoAnalise)">
+                [ngClass]="getStatusClass(element.status)">
 
               <mat-icon>
-                {{ getStatusIcon(element.resultadoAnalise) }}
+                {{ getStatusIcon(element.status) }}
               </mat-icon>
 
-              {{ getStatusLabel(element.resultadoAnalise) }}
+              {{ getStatusLabel(element.status) }}
 
             </div>
 

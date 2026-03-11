@@ -7,6 +7,10 @@ import { ReferenciasDialogComponent } from '../referencias-dialog/referencias-di
 import { ImgBBService } from '../services/imgbb.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HostListener } from '@angular/core';
+import { StatusProdutoAnalise } from '../models/status-produto-analise.enum';
+import { AuthService } from '../auth.service';
+import { UserRole } from '../models/userrole.enum';
+import {IMyOptions, IMyDateModel, MyDatePickerModule} from 'mydatepicker';
 
 @Component({
   selector: 'app-produtoanalise-form',
@@ -17,11 +21,22 @@ export class ProdutoAnaliseFormComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
+  currencyOptions = {
+  prefix: 'R$ ',
+  thousands: '.',
+  decimal: ',',
+  align: 'left'
+};
+
   form!: FormGroup;
   modoEdicao = false;
   produtoId!: number;
   salvando = false;
   dragging = false;
+  expandidoReferenia = false;
+  expandidoAvaliacao = false;
+  StatusProdutoAnalise = StatusProdutoAnalise;
+  usuarioSomenteLeitura = false;
   
   constructor(
     private fb: FormBuilder,
@@ -30,34 +45,63 @@ export class ProdutoAnaliseFormComponent implements OnInit {
     private service: ProdutoAnaliseService,
     private dialog: MatDialog,
     private serviceImgBB: ImgBBService,
-    private snackBar: MatSnackBar 
+    private snackBar: MatSnackBar ,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
 
-    this.form = this.fb.group({
-            id: [],
-            descricao: ['', Validators.required],
-            menorPreco: [0],
-            possuiPerguntas: [true],
-            possuiAnunciosRecentes: [true],
-            linkAliExpress: ['', Validators.required],
-            fotoBase64: [''],
-            fotoUrlImgBB: [''],
-            observacao: [''], 
-            usuario: [null],
-            referencias: this.fb.array([])
-          });
+  this.form = this.criarFormulario();
 
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
-      this.modoEdicao = true;
-      this.produtoId = +id;
-      this.carregarProduto(this.produtoId);
-    }else{
-      this.abrirDialogLink();
-    }
+  const id = this.route.snapshot.paramMap.get('id');
+
+  if (id) {
+    this.modoEdicao = true;
+    this.expandidoReferenia = !this.modoEdicao;
+    this.produtoId = +id;
+    this.carregarProduto(this.produtoId);
+  } else {
+    this.expandidoReferenia = !this.modoEdicao;
+    this.abrirDialogLink();
   }
+
+}
+
+criarFormulario(): FormGroup {
+
+  return this.fb.group({
+
+    id: [],
+
+    descricao: ['', Validators.required],
+
+    menorPreco: [null],
+
+    possuiPerguntas: [true],
+
+    possuiAnunciosRecentes: [true],
+
+    linkAliExpress: ['', Validators.required],
+
+    fotoBase64: [''],
+
+    fotoUrlImgBB: [''],
+
+    observacao: [''],
+
+    usuario: [null],
+
+    status: [StatusProdutoAnalise.MONITORANDO],
+
+    produtoAvaliacao: this.fb.group({
+      observacao: ['']
+    }),
+
+    referencias: this.fb.array([])
+
+  });
+
+}
 
   abrirDialogLink() {
 
@@ -95,24 +139,72 @@ export class ProdutoAnaliseFormComponent implements OnInit {
 
 carregarProduto(id: number) {
   this.service.buscarPorId(id).subscribe(produto => {
+    if (!produto.produtoAvaliacao) {
+      produto.produtoAvaliacao = {
+        observacao: ''
+      };
+    }
 
-    this.form.patchValue(produto);
+    this.form = this.criarFormulario();
+
+    // 🔥 NOVO: Garante 2 casas decimais no preço
+    if (produto.menorPreco) {
+      produto.menorPreco = parseFloat(produto.menorPreco.toFixed(2));
+    }
+
+    this.form.patchValue({
+      ...produto,
+      status: produto.status,
+      produtoAvaliacao: {
+        observacao: produto.produtoAvaliacao?.observacao || ''
+      }
+    });
+
+    // 🔥 NOVO: Formata o preço se existir
+    if (produto.menorPreco) {
+      const inputPreco = document.querySelector('input[formControlName="menorPreco"]') as HTMLInputElement;
+      if (inputPreco) {
+        const valorCentavos = Math.round(produto.menorPreco * 100).toString().padStart(3, '0');
+        const inteiro = valorCentavos.slice(0, -2) || '0';
+        const centavos = valorCentavos.slice(-2);
+        const inteiroFormatado = inteiro.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+        inputPreco.value = `R$ ${inteiroFormatado},${centavos}`;
+      }
+    }
+
+    const usuario = this.authService.getUsuario();
+    console.log("ROLE:", usuario?.role);
+    console.log("ENUM USER:", UserRole.USER);
+    
+    if (usuario?.role === UserRole.USER) {
+      this.form.get('status')?.disable();
+      this.form.get('produtoAvaliacao.observacao')?.disable();
+    }
+    
+    if(StatusProdutoAnalise.MONITORANDO !== produto.status){
+      this.expandidoAvaliacao = true;
+      this.expandidoReferenia = false;
+    }else{
+      this.expandidoAvaliacao = false;
+      this.expandidoReferenia = true;
+    }
+
     this.referencias.clear();
 
     produto.referencias?.forEach(ref => {
-
       const refGroup = this.fb.group({
         id: [ref.id],
         linkProduto: [ref.linkProduto],
         numeroVendas: [ref.numeroVendas],
         numeroEstoque: [ref.numeroEstoque],
-        visitasUltimosQuinzeDias:[ref.visitasUltimosQuinzeDias],
-        visitas: [ref.visitas], // readonly,
+        visitasUltimosQuinzeDias: [ref.visitasUltimosQuinzeDias],
+        visitas: [ref.visitas],
+        observacao: [''],
         fotoBase64: ['']
       });
+
       this.referencias.push(refGroup);
     });
-
   });
 }
 
@@ -134,6 +226,7 @@ carregarProduto(id: number) {
 
         // 🔥 agora entra em modo edição
         this.modoEdicao = true;
+        this.expandidoAvaliacao = !this.modoEdicao;
 
         // se backend retornou id, atualiza no form
         if (response.id) {
@@ -291,5 +384,69 @@ onPaste(event: ClipboardEvent) {
     event.preventDefault();
   }
 
+}
+toggleReferencias() {
+  this.expandidoReferenia = !this.expandidoReferenia;
+}
+
+toggleAvaliacao() {
+  this.expandidoAvaliacao = !this.expandidoAvaliacao;
+}
+
+getIconeStatus(): string {
+
+  const status = this.form.get('status')?.value;
+
+  switch (status) {
+    case 'MONITORANDO': return 'analytics';
+    case 'COTANDO': return 'search';
+    case 'REPROVADO': return 'cancel';
+    case 'APROVADO': return 'check_circle';
+    default: return 'help';
+  }
+
+}
+
+getClasseStatus(): string {
+
+  const status = this.form.get('status')?.value;
+
+  switch (status) {
+    case 'MONITORANDO': return 'status-monitorando';
+    case 'COTANDO': return 'status-cotando';
+    case 'REPROVADO': return 'status-reprovado';
+    case 'APROVADO': return 'status-aprovado';
+    default: return '';
+  }
+
+}
+
+apenasNumeros(event: KeyboardEvent) {
+  const char = String.fromCharCode(event.which);
+  if (!/[0-9]/.test(char)) {
+    event.preventDefault();
+  }
+}
+
+formatarPrecoInput(event: any) {
+  let valor = event.target.value.replace(/\D/g, '');
+
+  if (!valor) {
+    event.target.value = '';
+    this.form.get('menorPreco')?.setValue(null, { emitEvent: false });
+    return;
+  }
+
+  // Converte para número dividindo por 100 (centavos)
+  const numero = parseInt(valor) / 100;
+
+  // Formata para exibir
+  const formatado = numero.toLocaleString('pt-BR', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+
+  event.target.value = `R$ ${formatado}`;
+  this.form.get('menorPreco')?.setValue(numero, { emitEvent: false });
 }
 }

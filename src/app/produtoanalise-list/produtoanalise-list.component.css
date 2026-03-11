@@ -79,3 +79,33 @@
   border-radius: 8px;
   padding: 4px;
 }
+
+.status-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 10px;
+  border-radius:12px;
+  font-weight:500;
+  font-size:13px;
+}
+
+.status-monitorando{
+  background:#eeeeee;
+  color:#616161;
+}
+
+.status-cotando{
+  background:#e3f2fd;
+  color:#1565c0;
+}
+
+.status-reprovado{
+  background:#ffebee;
+  color:#c62828;
+}
+
+.status-aprovado{
+  background:#e8f5e9;
+  color:#2e7d32;
+}

@@ -354,3 +354,138 @@ mat-expansion-panel {
   max-height: 100%;
   object-fit: contain;
 }
+.referencias-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.acoes-header{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.avaliacao-container{
+  margin-top:20px;
+}
+
+.avaliacao-grid{
+  display:grid;
+  grid-template-columns: 250px 1fr;
+  gap:20px;
+  align-items:flex-start;
+}
+
+.status-field{
+  width:100%;
+}
+
+.observacao-container{
+  width:100%;
+}
+
+.full-width{
+  width:100%;
+}
+
+.status-badge{
+  padding:4px 10px;
+  border-radius:12px;
+  font-weight:500;
+  font-size:13px;
+}
+
+/* Cinza */
+.monitorando{
+  background:#eeeeee;
+  color:#555;
+}
+
+/* Azul */
+.cotando{
+  background:#e3f2fd;
+  color:#1565c0;
+}
+
+/* Vermelho */
+.reprovado{
+  background:#ffebee;
+  color:#c62828;
+}
+
+/* Verde */
+.aprovado{
+  background:#e8f5e9;
+  color:#2e7d32;
+}
+
+::ng-deep .status-monitorando .mat-mdc-form-field-flex {
+  background: #eeeeee;
+  border-radius: 6px;
+}
+
+::ng-deep .status-cotando .mat-mdc-form-field-flex {
+  background: #e3f2fd;
+  border-radius: 6px;
+}
+
+::ng-deep .status-reprovado .mat-mdc-form-field-flex {
+  background: #ffebee;
+  border-radius: 6px;
+}
+
+::ng-deep .status-aprovado .mat-mdc-form-field-flex {
+  background: #e8f5e9;
+  border-radius: 6px;
+}
+.status-monitorando {
+  color: #757575;
+}
+
+.status-cotando {
+  color: #1976d2;
+}
+
+.status-reprovado {
+  color: #d32f2f;
+}
+
+.status-aprovado {
+  color: #2e7d32;
+}
+
+.referencias-accordion {
+  margin-top: 20px;
+}
+
+/* Mantém seus badges de status */
+.status-field .mat-mdc-form-field-flex {
+  border-radius: 6px;
+}
+
+.status-monitorando {
+  background: #eeeeee;
+  color: #555;
+}
+
+.status-cotando {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.status-reprovado {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.status-aprovado {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+/* Badge do ícone */
+.status-field mat-icon {
+  margin-right: 8px;
+}
