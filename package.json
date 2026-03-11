@@ -5,6 +5,7 @@
     "node": "20.x"
   },
   "scripts": {
+    "preinstall": "npm install --legacy-peer-deps",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
