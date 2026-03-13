@@ -21,9 +21,9 @@
                [class.dragging]="dragging"
                tabindex="0">
 
-            <img *ngIf="form.get('fotoUrlImgBB')?.value"
-                 [src]="form.get('fotoUrlImgBB')?.value"
-                 class="foto-preview" />
+            <img *ngIf="previewImagem"
+                [src]="previewImagem"
+                class="foto-preview" />
 
             <div *ngIf="!form.get('fotoUrlImgBB')?.value" class="foto-placeholder">
               <mat-icon>photo_camera</mat-icon>
@@ -58,6 +58,9 @@
                   currencyMask
                   [options]="currencyOptions"
                   placeholder="R$ 0,00">
+            <mat-error *ngIf="form.get('menorPreco')?.hasError('required')">
+              Campo obrigatório
+            </mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline">

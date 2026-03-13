@@ -37,6 +37,7 @@ export class ProdutoAnaliseFormComponent implements OnInit {
   expandidoAvaliacao = false;
   StatusProdutoAnalise = StatusProdutoAnalise;
   usuarioSomenteLeitura = false;
+  previewImagem: string | null = null;
   
   constructor(
     private fb: FormBuilder,
@@ -94,6 +95,7 @@ criarFormulario(): FormGroup {
     status: [StatusProdutoAnalise.MONITORANDO],
 
     produtoAvaliacao: this.fb.group({
+      id: [],
       observacao: ['']
     }),
 
@@ -156,9 +158,13 @@ carregarProduto(id: number) {
       ...produto,
       status: produto.status,
       produtoAvaliacao: {
+        id: produto.produtoAvaliacao?.id,
         observacao: produto.produtoAvaliacao?.observacao || ''
       }
     });
+    console.log(produto);
+
+    this.previewImagem = this.form.get('fotoUrlImgBB')?.value || null;
 
     // 🔥 NOVO: Formata o preço se existir
     if (produto.menorPreco) {
@@ -217,6 +223,8 @@ carregarProduto(id: number) {
 
   const produto = this.form.getRawValue();
   this.salvando = true;
+
+  console.log(produto)
 
   this.service.salvar(produto)
     .subscribe({
@@ -324,9 +332,29 @@ processarArquivo(file: File) {
   const reader = new FileReader();
 
   reader.onload = () => {
-    this.form.patchValue({
-      fotoUrlImgBB: reader.result
+
+    const result = reader.result as string;
+
+    // preview imediato
+    this.previewImagem = result;
+
+    const base64 = result.split(',')[1];
+
+    this.serviceImgBB.uploadImagem(base64).subscribe({
+      next: (urlThumb) => {
+
+        // salva apenas URL do ImgBB
+        this.form.get('fotoUrlImgBB')?.setValue(urlThumb);
+
+        // preview agora usa a url real
+        this.previewImagem = urlThumb;
+
+      },
+      error: (err) => {
+        console.error('Erro ao enviar imagem', err);
+      }
     });
+
   };
 
   reader.readAsDataURL(file);
