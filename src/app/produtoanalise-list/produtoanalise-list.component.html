@@ -79,6 +79,12 @@
 
               {{ getStatusLabel(element.status) }}
 
+              <mat-icon *ngIf="mostrarAlerta(element)"
+                        class="alert-icon"
+                        matTooltip="Existe uma observação para verificar">
+                notification_important
+              </mat-icon>
+
             </div>
 
           </td>

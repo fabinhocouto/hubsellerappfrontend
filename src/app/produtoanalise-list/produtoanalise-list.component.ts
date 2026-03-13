@@ -96,4 +96,9 @@ getStatusClass(status: string): string {
 
 }
 
+mostrarAlerta(element: any): boolean {
+  return element.status === 'MONITORANDO' 
+         && !!element.produtoAvaliacao?.observacao;
+}
+
 }
