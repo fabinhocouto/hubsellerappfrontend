@@ -222,6 +222,11 @@ carregarProduto(id: number) {
   }
 
   const produto = this.form.getRawValue();
+
+  if (produto.menorPreco == null) {
+    produto.menorPreco = 0;
+  }
+
   this.salvando = true;
 
   console.log(produto)
@@ -239,6 +244,11 @@ carregarProduto(id: number) {
         // se backend retornou id, atualiza no form
         if (response.id) {
           this.form.patchValue({ id: response.id });
+        }
+
+        // 🔥 IMPORTANTE
+        if (response.produtoAvaliacao?.id) {
+          this.form.get('produtoAvaliacao.id')?.setValue(response.produtoAvaliacao.id);
         }
 
         // 🔥 mensagem de sucesso
