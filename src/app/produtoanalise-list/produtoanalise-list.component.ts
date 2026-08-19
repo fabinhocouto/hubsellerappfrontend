@@ -101,4 +101,30 @@ mostrarAlerta(element: any): boolean {
          && !!element.produtoAvaliacao?.observacao;
 }
 
+reprovarAnalise(produto: any) {
+
+  if (!confirm('Deseja realmente excluir esta análise?')) {
+    return;
+  }
+
+  this.service.excluir(produto.id).subscribe({
+    next: () => {
+      this.dataSource.data = this.dataSource.data.filter(
+        p => p.id !== produto.id
+      );
+
+      this.produtosOriginais = this.produtosOriginais.filter(
+        p => p.id !== produto.id
+      );
+    },
+    error: (erro) => {
+      console.error('Erro ao excluir análise:', erro);
+    }
+  });
+}
+
+podeReprovar(produto: any): boolean {
+  return produto.status === 'MONITORANDO';
+}
+
 }

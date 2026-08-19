@@ -62,6 +62,13 @@
                     [routerLink]="['editar', element.id]">
               <mat-icon>edit</mat-icon>
             </button>
+            <button mat-icon-button 
+                    color="warn"
+                    *ngIf="podeReprovar(element)"
+                    (click)="reprovarAnalise(element)"
+                    matTooltip="Reprovar análise">
+              <mat-icon>cancel</mat-icon>
+            </button>
           </td>
         </ng-container>
 
