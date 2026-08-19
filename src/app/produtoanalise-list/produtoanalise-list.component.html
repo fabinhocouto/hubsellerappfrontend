@@ -56,21 +56,33 @@
         </ng-container>   
 
         <ng-container matColumnDef="acoes">
-          <th mat-header-cell *matHeaderCellDef> Ações </th>
-          <td mat-cell *matCellDef="let element">
-            <button mat-icon-button color="primary" 
-                    [routerLink]="['editar', element.id]">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button 
-                    color="warn"
-                    *ngIf="podeReprovar(element)"
-                    (click)="reprovarAnalise(element)"
-                    matTooltip="Reprovar análise">
-              <mat-icon>cancel</mat-icon>
-            </button>
-          </td>
-        </ng-container>
+  <th mat-header-cell *matHeaderCellDef>
+    Ações
+  </th>
+
+  <td mat-cell *matCellDef="let element">
+    <div class="acoes-container">
+
+      <button
+        mat-icon-button
+        color="primary"
+        [routerLink]="['editar', element.id]"
+        matTooltip="Editar">
+        <mat-icon>edit</mat-icon>
+      </button>
+
+      <button
+        mat-icon-button
+        color="warn"
+        *ngIf="podeReprovar(element)"
+        (click)="reprovarAnalise(element)"
+        matTooltip="Reprovar análise">
+        <mat-icon>cancel</mat-icon>
+      </button>
+
+    </div>
+  </td>
+</ng-container>
 
         <ng-container matColumnDef="resultado">
           <th mat-header-cell *matHeaderCellDef> Status </th>

@@ -116,3 +116,16 @@
   margin-left: 6px;
 }
 
+.acoes-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  white-space: nowrap;
+}
+
+.mat-column-acoes {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+}
