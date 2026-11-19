@@ -47,19 +47,25 @@
 
       <div class="metricas">
 
-        <mat-chip>
+        <mat-chip *ngIf="ref.visitas?.[ref.visitas.length - 1]?.numeroVisitas !== -1; else loginAvantpro">
           Total {{ ref.visitas?.[ref.visitas.length - 1]?.numeroVisitas ?? 0 }}
           visitas
         </mat-chip>
 
-        <mat-chip
+       <ng-template #loginAvantpro>
+        <mat-chip class="chip-avantpro">
+          Faça login no Avantpro para consultar as visitas
+        </mat-chip>
+      </ng-template>
+
+        <!--mat-chip
           selected
           [ngClass]="getClassePerformance(ref.visitasUltimosQuinzeDias)">
 
           {{ ref.visitasUltimosQuinzeDias }} visitas nos últimos 15 dias
           (Média {{ (ref.visitasUltimosQuinzeDias / 15) | number:'1.0-1' }} por dia)
 
-        </mat-chip>
+        </mat-chip-->
 
         <mat-chip
           [ngClass]="getClasseCriacao(ref.quantidadeDiasCriado)">

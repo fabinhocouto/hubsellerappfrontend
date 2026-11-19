@@ -186,6 +186,10 @@ mat-expansion-panel {
   border-left: 6px solid #f44336;
 }
 
+.performance-azul {
+  border-left: 6px solid #2196f3;
+}
+
 .form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));

@@ -293,10 +293,10 @@ removerReferencia(index: number) {
   this.referencias.removeAt(index);
 }
 getClassePerformance(visitas: number): string {
-  let media = visitas / 15;
-  if (media > 60) return 'performance-alta';
-  if (media > 30) return 'performance-media';
-  return 'performance-baixa';
+  //let media = visitas / 15;
+  //if (media > 60) return 'performance-alta';
+  //if (media > 30) return 'performance-media';
+  return 'performance-azul';
 }
 abrirAnuncio(url: string) {
   window.open(url, '_blank');
