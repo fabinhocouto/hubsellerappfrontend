@@ -487,4 +487,13 @@ formatarPrecoInput(event: any) {
   event.target.value = `R$ ${formatado}`;
   this.form.get('menorPreco')?.setValue(numero, { emitEvent: false });
 }
+
+ordenarVisitas(visitas: any[]): any[] {
+  if (!visitas) return [];
+
+  return [...visitas].sort((a, b) =>
+    new Date(b.dataVerificacao).getTime() -
+    new Date(a.dataVerificacao).getTime()
+  );
+}
 }

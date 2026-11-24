@@ -139,7 +139,7 @@
       </div-->
 
       <div class="visitas-mini">
-        <div *ngFor="let v of ref.value.visitas" class="mini-item">
+        <div *ngFor="let v of ordenarVisitas(ref.value.visitas)" class="mini-item">
           {{ v.dataVerificacao | date:'dd/MM' }}
           <strong>{{ v.numeroVisitas }} visitas</strong>
         </div>
